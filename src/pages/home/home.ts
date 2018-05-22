@@ -1,20 +1,29 @@
 import { Component } from '@angular/core';
 import { NavController, ItemSliding, ToastController, ModalController } from 'ionic-angular';
 
+import { CartService } from './../../providers/cart-service';
 import { ProductDetailsPage } from './../product-details/product-details';
 
 @Component({
   selector: 'page-home',
-  templateUrl: 'home.html'
+  templateUrl: 'home.html',
+  
 })
 export class HomePage {
   public products: any = [];
+  public items: any = [];
 
   constructor(
     public navCtrl: NavController,
     public toastCtrl: ToastController,
-    public modalCtrl: ModalController
-  ) { }
+    public modalCtrl: ModalController,
+    public cartService: CartService
+  ) { 
+    this.cartService.cartChange.subscribe((data) =>{
+      this.cartService.getItems();
+      this.items = this.cartService.items;
+    });
+  }
 
   ionViewDidLoad() {
     this.products.push({ id: 3455, title: 'Mouse', description: 'Mouse caro', image: 'http://placehold.it/128x128', price: 299.00 } );
@@ -29,7 +38,13 @@ export class HomePage {
     modal.present();
   }
 
-  addToCart(slidingItem: ItemSliding){
+  addToCart(slidingItem: ItemSliding, product: any){
+    this.cartService.addItem({
+       id: product.id,
+       title: product.title,
+       price: product.price,
+      quantity: 1 
+    });
     slidingItem.close();
     let toast = this.toastCtrl.create({
       message: 'Produto adicionado ao carrinho',

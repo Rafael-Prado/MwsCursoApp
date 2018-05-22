@@ -19,7 +19,7 @@
         <p><strong>{{ product.price | currency: 'BRL'}}</strong></p>
       </ion-item>
       <ion-item-options side="right">
-        <button ion-button color="secondary" (click)="addToCart(slidingItem)">
+        <button ion-button color="secondary" (click)="addToCart(slidingItem, product)">
           <ion-icon name="add"></ion-icon>Adicionar</button>     
       </ion-item-options>
     </ion-item-sliding>
